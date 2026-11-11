@@ -2,14 +2,35 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>HENAR Lite</title>
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Los pads se dibujan desde app.js dentro de este contenedor -->
+  <main id="pads" aria-label="Pads"></main>
+
+  <button id="btn-ajustes" type="button" aria-label="Ajustes">⚙</button>
+
+  <!-- Panel de ajustes (oculto hasta que se pulsa el engranaje) -->
+  <section id="panel" hidden>
+    <div class="panel-caja">
+      <h1>Ajustes</h1>
+      <p class="ayuda">Pulsa la tecla de un pad y luego la tecla que quieras asignarle. Elige la nota que debe sonar.</p>
+      <div id="filas"></div>
+      <div class="panel-botones">
+        <button id="btn-restablecer" type="button">Restablecer</button>
+        <button id="btn-cerrar" type="button" class="principal">Cerrar</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js");
