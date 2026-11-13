@@ -17,141 +17,68 @@ html, body {
   overscroll-behavior: none;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  height: 100dvh;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-}
-
-/* ---------- Barra superior ---------- */
-
-#barra {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 6px 8px 0;
-  min-height: 52px;
-}
-
-#estado {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.chip {
-  background: #f1f3f5;
-  border-radius: 999px;
-  padding: 5px 12px;
-  font-size: 15px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-#est-instrumento { background: #1b1b1b; color: #ffffff; }
-
-#btn-ajustes {
-  position: relative;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  background: #f1f3f5;
-  color: #1b1b1b;
-  font-size: 22px;
-  cursor: pointer;
-  overflow: hidden;
-  touch-action: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#btn-ajustes span { position: relative; z-index: 1; }
-
-/* Al mantenerlo pulsado, un círculo amarillo se va llenando */
-#btn-ajustes.manteniendo::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #ffd43b;
-  transform: scale(0);
-  animation: llenar 1s linear forwards;
-}
-
-@keyframes llenar { to { transform: scale(1); } }
-
 /* ---------- Pads ---------- */
 
 #pads {
-  flex: 1;
-  min-height: 0;
-  padding: 8px;
+  height: 100dvh;
+  padding: 12px;
   display: grid;
-  gap: 8px;
+  gap: 12px;
+  /* Horizontal: 3 columnas x 2 filas */
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Vertical (móvil de pie): 2 columnas x 3 filas */
+@media (orientation: portrait) {
+  #pads { grid-template-columns: repeat(2, 1fr); }
 }
 
 .pad {
   border: none;
-  border-radius: 22px;
-  background: var(--color, #e9ecef);
+  border-radius: 28px;
+  background: var(--color);
   color: #1b1b1b;
   font: inherit;
-  min-width: 0;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
   touch-action: none;           /* los toques en el pad no mueven ni hacen zoom */
   -webkit-tap-highlight-color: transparent;
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.25);
   transition: transform 60ms, box-shadow 60ms, filter 60ms;
 }
 
-.pad .nota  { font-size: clamp(18px, 4.6vmin, 48px); font-weight: 800; line-height: 1; }
-.pad .tecla { font-size: clamp(11px, 2vmin, 18px); opacity: 0.75; }
-
-/* Pads de función: grises, con borde, para distinguirlos de las notas */
-.pad.funcion {
-  background: #e9ecef;
-  border: 3px solid #1b1b1b;
-}
-.pad.funcion .nota { font-size: clamp(12px, 3vmin, 28px); letter-spacing: 0.02em; }
+.pad .nota  { font-size: clamp(32px, 8vw, 72px); font-weight: 800; line-height: 1; }
+.pad .tecla { font-size: clamp(14px, 2.5vw, 22px); opacity: 0.75; }
 
 /* Pad pulsado */
 .pad.activo {
-  transform: translateY(5px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-  filter: brightness(1.1) saturate(1.2);
-  outline: 5px solid #1b1b1b;
-  outline-offset: -5px;
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  filter: brightness(1.12) saturate(1.2);
+  outline: 6px solid #1b1b1b;
+  outline-offset: -6px;
 }
 
-/* ---------- Aviso breve ---------- */
+/* ---------- Botón de ajustes ---------- */
 
-#aviso {
+#btn-ajustes {
   position: fixed;
-  left: 50%;
-  bottom: max(20px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  background: #1b1b1b;
-  color: #ffffff;
-  padding: 12px 22px;
-  border-radius: 999px;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1b1b1b;
   font-size: 22px;
-  font-weight: 700;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 120ms;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
-
-#aviso.visible { opacity: 1; }
 
 /* ---------- Panel de ajustes ---------- */
 
@@ -166,81 +93,56 @@ body {
   justify-content: center;
   overflow-y: auto;
   padding: 16px;
-  -webkit-user-select: text;
-  user-select: text;
 }
 
 .panel-caja {
   width: 100%;
-  max-width: 560px;
+  max-width: 520px;
   background: #ffffff;
   border-radius: 20px;
   padding: 20px;
 }
 
 .panel-caja h1 { margin: 0 0 8px; font-size: 24px; }
-.panel-caja h2 { margin: 22px 0 8px; font-size: 18px; border-top: 1px solid #dee2e6; padding-top: 16px; }
-.ayuda { margin: 0 0 12px; color: #444; font-size: 15px; }
-
-.campo {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.campo label { font-weight: 600; }
-.campo input[type="range"] { width: 100%; min-height: 44px; }
+.ayuda { margin: 0 0 16px; color: #444; }
 
 .fila {
   display: grid;
-  grid-template-columns: 36px 1fr 1.4fr;
-  gap: 8px;
+  grid-template-columns: 36px 1fr 1fr;
+  gap: 10px;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .fila .numero {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #f1f3f5;
+  background: var(--color);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
 }
 
-.campo select, .fila button, .fila select, .panel-botones button, .secundario {
+.fila button, .fila select, .panel-botones button {
   font: inherit;
-  font-size: 17px;
-  padding: 8px 10px;
+  font-size: 18px;
+  padding: 10px 12px;
   border: 2px solid #1b1b1b;
   border-radius: 12px;
   background: #ffffff;
   color: #1b1b1b;
-  min-height: 46px;
-  min-width: 0;
+  min-height: 48px;
 }
 
 .fila button.esperando { background: #fff3b0; }
-
-#diagnostico {
-  margin: 0 0 12px;
-  padding: 10px 12px;
-  background: #f1f3f5;
-  border-radius: 12px;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
-  font-size: 13px;
-  white-space: pre-wrap;
-}
 
 .panel-botones {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .panel-botones .principal { background: #1b1b1b; color: #ffffff; }
