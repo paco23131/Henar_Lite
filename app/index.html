@@ -12,17 +12,47 @@
 </head>
 <body>
 
+  <!-- Barra superior: qué está sonando y el engranaje de ajustes -->
+  <header id="barra">
+    <div id="estado">
+      <span class="chip" id="est-instrumento"></span>
+      <span class="chip" id="est-escala"></span>
+      <span class="chip" id="est-volumen"></span>
+      <span class="chip" id="est-octava"></span>
+    </div>
+    <button id="btn-ajustes" type="button" aria-label="Ajustes (mantener pulsado)" title="Mantén pulsado para abrir los ajustes"><span>⚙</span></button>
+  </header>
+
   <!-- Los pads se dibujan desde app.js dentro de este contenedor -->
   <main id="pads" aria-label="Pads"></main>
 
-  <button id="btn-ajustes" type="button" aria-label="Ajustes">⚙</button>
+  <!-- Aviso breve al usar una función (volumen, octava...) -->
+  <div id="aviso" role="status" aria-live="polite"></div>
 
-  <!-- Panel de ajustes (oculto hasta que se pulsa el engranaje) -->
+  <!-- Panel de ajustes (oculto hasta mantener pulsado el engranaje) -->
   <section id="panel" hidden>
     <div class="panel-caja">
       <h1>Ajustes</h1>
-      <p class="ayuda">Pulsa la tecla de un pad y luego la tecla que quieras asignarle. Elige la nota que debe sonar.</p>
+
+      <h2>Sonido</h2>
+      <div class="campo"><label for="aj-instrumento">Instrumento</label><select id="aj-instrumento"></select></div>
+      <div class="campo"><label for="aj-escala">Escala</label><select id="aj-escala"></select></div>
+      <div class="campo"><label for="aj-raiz">Nota de inicio</label><select id="aj-raiz"></select></div>
+      <div class="campo">
+        <label for="aj-volumen">Volumen <span id="aj-volumen-texto"></span></label>
+        <input id="aj-volumen" type="range" min="0" max="100" step="10">
+      </div>
+
+      <h2>Pads</h2>
+      <p class="ayuda">Para cambiar la tecla de un pad, pulsa su botón y luego la tecla nueva. En el desplegable se elige si el pad toca una nota de la escala, una nota fija o una función.</p>
+      <div class="campo"><label for="aj-numpads">Pads en pantalla</label><select id="aj-numpads"></select></div>
       <div id="filas"></div>
+
+      <h2>Diagnóstico</h2>
+      <p class="ayuda">Sirve para comprobar el retraso entre tocar un pad y oír el sonido.</p>
+      <pre id="diagnostico"></pre>
+      <button id="btn-probar" type="button" class="secundario">Probar sonido</button>
+
       <div class="panel-botones">
         <button id="btn-restablecer" type="button">Restablecer</button>
         <button id="btn-cerrar" type="button" class="principal">Cerrar</button>
@@ -30,6 +60,7 @@
     </div>
   </section>
 
+  <script src="motor.js"></script>
   <script src="app.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
